@@ -99,9 +99,9 @@ class ColorSetting extends Component {
 		}
 	}
 	
-	static navigationOptions = {
-		title: 'Color List',
-	};
+	// static navigationOptions = {
+	// 	title: 'Color List',
+	// };
 	
 	_keyExtractor = (item, index) => index;
 	

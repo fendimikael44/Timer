@@ -73,9 +73,9 @@ export default class NotifSetting extends Component {
 		}
 	}
 	
-	static navigationOptions = {
-		title: 'Sound Picker',
-	};
+	// static navigationOptions = {
+	// 	title: 'Sound Picker',
+	// };
 	
 	_renderItem = ({item, index}) => (
 		<ListSound

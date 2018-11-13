@@ -15,8 +15,9 @@ import {
 	Button
 } from 'react-native';
 import { connect } from 'react-redux'
+import { ListItem } from 'react-native-material-ui';
 
-class ListMenu extends React.PureComponent {
+class ListMenu extends React.Component {
 	_onPress = (key) => {
 		this.props.onPressItem(key);
 	}
@@ -47,6 +48,22 @@ class ListMenu extends React.PureComponent {
 				</View>
 			</TouchableHighlight>
 		);
+		// return (	
+		// 	<TouchableHighlight
+		// 		onPress={this._onPress.bind(this, item.key)}
+		// 		underlayColor='#dddddd'>		
+		// 		<View>
+		// 			<ListItem
+		// 				divider
+		// 				centerElement={{
+		// 					primaryText: {title},
+		// 					secondaryText: {desc}
+		// 				}}
+		// 				onPress={this._onPress.bind(this, item.key)}	
+		// 			/>
+		// 		</View>
+		// 	</TouchableHighlight>
+		// );
 	}
 }
 
@@ -70,9 +87,9 @@ class SettingPage extends Component {
 		}
 	}
 	
-	static navigationOptions = {
-		title: 'Setting',
-	};
+	// static navigationOptions = {
+	// 	title: 'Setting',
+	// };
 	
 	_keyExtractor = (item, index) => index;
 	
