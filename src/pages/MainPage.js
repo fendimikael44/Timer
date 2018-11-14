@@ -2,14 +2,8 @@
 
 import React, { Component } from 'react';
 import {
-	Alert,
 	StyleSheet,
 	View,
-	TextInput,
-	Button,
-	TouchableOpacity,
-	Image,
-	Text
 } from 'react-native';
 import Clock from '../components/Clock';
 import { connect } from 'react-redux'
@@ -18,9 +12,7 @@ class MainPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// themeColor: '#FFFFFF',
 			clockFrame: '#212121',
-			// timerColor: '#133C99',
 			backwardColor: '#C0C0C0',
 			textColor: '#000000',
 			soundAlert: require('../sound/alarm.mp3'),
@@ -32,13 +24,13 @@ class MainPage extends Component {
 		const { setting } = this.props
 
 		return (
-			<View style={{flex:1, backgroundColor:setting.themeColor}}>		
+			<View style={{flex:1, backgroundColor:setting.theme.color}}>		
 				<Clock 
-					clockColor={setting.themeColor}
+					clockColor={setting.theme.color}
 					clockFrame={this.state.clockFrame}
-					timerColor={setting.pathColor}
+					timerColor={setting.path.color}
 					backwardColor={this.state.backwardColor}
-					textColor={this.state.textColor}
+					textColor={this.state.textColor == setting.theme.color ? '#FFFFFF' :this.state.textColor}
 					soundAlert={this.state.soundAlert}
 				/>	
 			</View>

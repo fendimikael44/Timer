@@ -11,7 +11,6 @@ import SettingPage from '../pages/SettingPage';
 import ThemeSetting from '../pages/ThemeSetting';
 import ColorSetting from '../pages/ColorSetting';
 import NotifSetting from '../pages/NotifSetting';
-// import SettingMenu from '../components/Setting'
 import AppBar from '../components/Toolbar'
 
 const setNavigationOptions = (idx) => ({
@@ -33,12 +32,12 @@ const Nav = createStackNavigator({
     },
     ThemeSetting: { screen: ThemeSetting,
       navigationOptions: ({navigation}) => ({ 
-        header: props => <AppBar centerElement="Color Setting" leftElement="arrow-back" navigation={navigation} />
+        header: props => <AppBar centerElement="Theme Setting" leftElement="arrow-back" navigation={navigation} />
       }) 
     },
     ColorSetting: { screen: ColorSetting,
       navigationOptions: ({navigation}) => ({ 
-        header: props => <AppBar centerElement="Theme" leftElement="arrow-back" navigation={navigation} />
+        header: props => <AppBar centerElement="Color Setting" leftElement="arrow-back" navigation={navigation} />
       }) 
     },
     NotifSetting: { screen: NotifSetting,

@@ -15,6 +15,7 @@ import {
 	Button
 } from 'react-native';
 import { connect } from 'react-redux'
+import { fetchSettings, fetchThemes } from '../actions/setting.js'
 import { ListItem } from 'react-native-material-ui';
 
 class ListMenu extends React.Component {
@@ -24,13 +25,6 @@ class ListMenu extends React.Component {
 
 	render() {
 		const { id, title, desc, selected } = this.props
-		// const item = this.props.item;
-		// const title = item.title;
-		// const desc = item.desc;
-		// const color = item.selected;
-		// const colorSelected = item.id == '4' ? 
-		// 					<Text style={styles.soundDesc}>{item.selected}</Text> : 
-		// 					<Text style={[styles.colorDesc, {backgroundColor:color}]}></Text>
 		
 		return (			
 			<TouchableHighlight
@@ -49,22 +43,6 @@ class ListMenu extends React.Component {
 				</View>
 			</TouchableHighlight>
 		);
-		// return (	
-		// 	<TouchableHighlight
-		// 		onPress={this._onPress.bind(this, item.key)}
-		// 		underlayColor='#dddddd'>		
-		// 		<View>
-		// 			<ListItem
-		// 				divider
-		// 				centerElement={{
-		// 					primaryText: {title},
-		// 					secondaryText: {desc}
-		// 				}}
-		// 				onPress={this._onPress.bind(this, item.key)}	
-		// 			/>
-		// 		</View>
-		// 	</TouchableHighlight>
-		// );
 	}
 }
 
@@ -74,14 +52,22 @@ class SettingPage extends Component {
 		// const data = this.props.navigation.state.params;
 		const { setting } = props
 		this.state = { 
-			themeColor: setting.themeColor,
-			pathColor: setting.pathColor,
+			settingList: setting.settingList,
+			themeList: setting.themeList,
+			theme: setting.theme,
+			path: setting.path,
+			// themeColor: setting.theme.color,
+			// pathColor: setting.pathColor,
 			// backwardTimer: data.configData.backwardTimer,
 			// textColor: data.configData.textColor,
 			// sound: '',
 		}
 	}
 
+	componentDidMount() {
+		this.props.getSettingList()
+		// this.props.getThemeList()
+    }
 	
 	_keyExtractor = (item, index) => item.id;
 	
@@ -90,7 +76,8 @@ class SettingPage extends Component {
 			id={item.id}
 			title={item.title}
 			desc={item.desc}
-			selected={item.selected}
+			// selected={this.state[item.type].name}
+			selected={this.props.setting[item.type].name}
 			index={index}
 			onPressItem={this._onPressItem}
 		/>
@@ -106,28 +93,26 @@ class SettingPage extends Component {
 		else if(id == "2"){
 			navigate('ColorSetting');
 		}
-		// else if(key == "3"){
-		// 	this.props.navigation.navigate('ColorSetting', {onGoBack: this.changeRemainingTimer, selected: this.state.backwardTimer});
-		// }
-		// else if(key == "4"){
-		// 	this.props.navigation.navigate('NotifSetting', {onGoBack: this.chageNotification, selected: this.state.sound})
-		// }
 	}
 	
 	render() {	
 		const { setting } = this.props
-		const FlatListMenu = [
-				{id: '1', title: 'Custom Theme', desc: 'Change Theme', selected: setting.themeColor},
-				{id: '2', title: 'Custom Timer Color', desc: 'Change Timer Color', selected: setting.pathColor},
-				// {key: '3', title: 'Custom Remaining Timer Color', desc: 'Change Remaining Timer Color', selected: data.configData.backwardTimer},
-				// {key: '4', title: 'Custom Notification', desc: 'Play a custom notification when the timer finishes', selected: data.configData.sound},
-		]
+		const settingList = setting.settingList
+		// const themeList = setting.themeList
+		// const FlatListMenu = [
+		// 		{id: '1', title: 'Custom Theme', desc: 'Change Theme', selected: setting.themeColor},
+		// 		{id: '2', title: 'Custom Timer Color', desc: 'Change Timer Color', selected: setting.pathColor},
+		// 		{key: '3', title: 'Custom Remaining Timer Color', desc: 'Change Remaining Timer Color', selected: data.configData.backwardTimer},
+		// 		{key: '4', title: 'Custom Notification', desc: 'Play a custom notification when the timer finishes', selected: data.configData.sound},
+		// ]
 
 		return (	
+			settingList.length > 0 &&
 			<View style={styles.SettingContainer}>
 				<FlatList 
-					data={FlatListMenu}
-					extraData={this.state}
+					data={settingList}
+					// extraData={this.state}
+					extraData={setting}
 					keyExtractor={this._keyExtractor}
 					renderItem={this._renderItem}
 				/>
@@ -144,7 +129,7 @@ const styles = StyleSheet.create({
 		flex:1,	
 	},
 	item: {
-		padding: 10,
+		padding: 5,
 		fontSize: 18,
 		height: 44,
 	},
@@ -177,7 +162,7 @@ const styles = StyleSheet.create({
 	},
 	rowContainer: {
 		flexDirection: 'row',
-		padding: 10
+		padding: 5
 	},
 	flowRight: {
 		marginBottom: 10,
@@ -192,4 +177,11 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps)(SettingPage)
+const mapDispatchToProps = (dispatch) => {
+    return {
+		getSettingList: () => dispatch(fetchSettings()),
+		getThemeList: () => dispatch(fetchThemes()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingPage)

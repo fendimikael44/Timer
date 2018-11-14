@@ -7,7 +7,7 @@ import Sound from 'react-native-sound';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-const start = null;
+let _start = null;
 
 
 const {height, width} = Dimensions.get('window');
@@ -345,7 +345,7 @@ export default class Clock extends Component {
 				newTimer: false
 			})
 			
-			start = setInterval(() => {
+			_start = setInterval(() => {
 				counter = counter + 0.1;		
 				var line = describeArc(start_angle + counter, end_angle);
 				var old_line = describeArc(start_angle, start_angle + counter);
@@ -383,7 +383,7 @@ export default class Clock extends Component {
 			isPause: true
 		})
 		
-		clearInterval(start);
+		clearInterval(_start);
 	}
 	
 	_onStop = () => {
@@ -400,7 +400,7 @@ export default class Clock extends Component {
 		var start_angle = this.state.startAngle;
 		var end_angle = this.state.endAngle;
 	
-		start = setInterval(() => {
+		_start = setInterval(() => {
 			counter = counter + 0.1;		
 			var line = describeArc(start_angle + counter, end_angle);
 			var old_line = describeArc(start_angle, start_angle + counter);
@@ -433,7 +433,7 @@ export default class Clock extends Component {
 	}
 	
 	_reset = () => {
-		clearInterval(start);
+		clearInterval(_start);
 		this.setState({
 			startAngle: '',
 			endAngle: '',
@@ -496,7 +496,17 @@ export default class Clock extends Component {
 					<View style={styles.btn}>
 					<Button
 					  onPress={this._onStart}
-					  title="Start"							 
+					  title="Start"			
+					  color="green"				 
+					/>
+					</View>
+
+		const btnReset = this.state.timer == 0 || !this.state.newTimer ? null :
+					<View style={styles.btn}>
+					<Button
+						onPress={this._reset}
+						title="Reset"
+						color="orange"					  
 					/>
 					</View>
 					
@@ -514,7 +524,7 @@ export default class Clock extends Component {
 					<Button
 						onPress={this._onPause}
 						title="Pause"
-						color="red"					  
+						color="blue"					  
 					/>
 					</View>
 		
@@ -585,6 +595,7 @@ export default class Clock extends Component {
 				</View>
 				<View style={styles.boxButton}>
 					{btnStart}
+					{btnReset}
 					{btnStop}
 					{btnPause}
 					{btnResume}

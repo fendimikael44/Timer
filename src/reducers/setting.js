@@ -1,5 +1,19 @@
 const initalState = {
-    themeColor: '#FFFFFF',
+    settingList: [],
+    themeList: [],
+    pathList: [],
+    // themeName: 'Light Theme',
+    // themeColor: '#FFFFFF',
+    theme: {
+        id: '1',
+        name: 'Light Theme',
+        color: '#FFFFFF',
+    },
+    path: {
+        id: '1',
+        name: 'Primary',
+        color: '#2196f3',
+    },
     clockFrame: '#000000',
     pathColor: '#2196f3',
     backwardColor: '#C0C0C0',
@@ -10,15 +24,30 @@ const initalState = {
 
 const settingReducer = (state = initalState, action) => {
     switch(action.type){
+        case 'LIST_SETTING':
+            return {
+                ...state,
+                settingList: action.payload.settingList
+            }
+        case 'LIST_THEME':
+            return {
+                ...state,
+                themeList: action.payload.themeList
+            }
+        case 'LIST_PATH':
+            return {
+                ...state,
+                pathList: action.payload.pathList
+            }
         case 'THEME_COLOR_CHANGE': 
             return {
                 ...state, 
-                themeColor: action.payload.newThemeColor
+                theme: action.payload.newTheme,
             }
         case 'PATH_COLOR_CHANGE': 
             return {
                 ...state, 
-                pathColor: action.payload.newPathColor
+                path: action.payload.newPath
             }
         default:
             return state

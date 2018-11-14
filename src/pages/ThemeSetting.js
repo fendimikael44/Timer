@@ -1,32 +1,31 @@
 import React, { Component } from 'react'
 import {
 	StyleSheet,
-	Text,
 	View,
 	FlatList,
-	Alert,
 	TouchableHighlight,
-	Button,
 } from 'react-native';
 import { Checkbox } from 'react-native-material-ui'
 import { connect } from 'react-redux'
-import { changeThemeColor } from '../actions/setting'
+import { changeThemeColor, fetchThemes } from '../actions/setting'
 
 class ListTheme extends React.PureComponent {
 	_onPress = () => {
-		this.props.onPressItem(this.props.color);
+		const { id, name, color } = this.props
+		this.props.onPressItem({id, name, color});
 	}
 
 	render() {
         const { id, name, color, selected } = this.props
-        // const checked = selected == color; 
+
 		return (
 			<TouchableHighlight
-				onPress={this._onPress}
+				onPress={ this._onPress }
 				underlayColor='#dddddd' >
 				<View>
 					<View style={styles.rowContainer}>			
-                        <Checkbox label={name} value={color} checked={selected} onCheck={this._onPress} />
+						<Checkbox label={name} value={color} checked={selected} 
+							onCheck={ this._onPress } />
 					</View>
 					<View style={styles.separator}/>
 				</View>
@@ -40,11 +39,15 @@ class ThemeSetting extends Component {
 		super(props);
 
 		this.state = { 
-			theme: this.props.setting.themeColor,
+			theme: this.props.setting.theme.color,
 		}
 	}
+
+	componentDidMount() {
+		this.props.getThemeList()
+    }
 	
-	_keyExtractor = (item, index) => item.id;
+	_keyExtractor = (item, index) => item.id
 	
 	_renderItem = ({item, index}) => (
 		<ListTheme
@@ -56,24 +59,27 @@ class ThemeSetting extends Component {
 		/>
 	);
 	
-	_onPressItem = (color) => {
+	_onPressItem = (theme) => {
         this.setState((state) => {
-            return {theme: color}
+            return {theme: theme.color}
         })
         
-		return this.props.changeTheme(color)        
+		return this.props.changeTheme(theme)        
 	}
 	
 	render() {
-        const data = [
-                    {id: '1', name: 'Light Theme', color: '#FFFFFF'},
-                    {id: '2', name: 'Dark Theme', color: '#000000'},
-                ]
+		const { setting } = this.props
+		const themeList = setting.themeList
+
+        // const data = [
+        //             {id: '1', name: 'Light Theme', color: '#FFFFFF'},
+        //             {id: '2', name: 'Dark Theme', color: '#000000'},
+        //         ]
 
 		return (	
 			<View style={styles.SettingContainer}>
 				<FlatList 
-					data={data}
+					data={themeList}
                     extraData={this.state}
 					keyExtractor={this._keyExtractor}
 					renderItem={this._renderItem}
@@ -123,7 +129,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeTheme: (newTheme) => dispatch(changeThemeColor(newTheme))
+		changeTheme: (newTheme) => dispatch(changeThemeColor(newTheme)),
+		getThemeList: () => dispatch(fetchThemes()),
 	}
 }
 

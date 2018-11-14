@@ -1,0 +1,1 @@
+export const baseUrl = 'http://projectkan.com/simplemail/timer/'
