@@ -8,6 +8,7 @@ import {
 import { createStackNavigator} from 'react-navigation';
 import MainPage from '../pages/MainPage';
 import SettingPage from '../pages/SettingPage';
+import ThemeSetting from '../pages/ThemeSetting';
 import ColorSetting from '../pages/ColorSetting';
 import NotifSetting from '../pages/NotifSetting';
 // import SettingMenu from '../components/Setting'
@@ -30,14 +31,19 @@ const Nav = createStackNavigator({
         header: props => <AppBar centerElement="Setting" leftElement="arrow-back" navigation={navigation} />
       }) 
     },
-    ColorSetting: { screen: ColorSetting,
+    ThemeSetting: { screen: ThemeSetting,
       navigationOptions: ({navigation}) => ({ 
         header: props => <AppBar centerElement="Color Setting" leftElement="arrow-back" navigation={navigation} />
       }) 
     },
+    ColorSetting: { screen: ColorSetting,
+      navigationOptions: ({navigation}) => ({ 
+        header: props => <AppBar centerElement="Theme" leftElement="arrow-back" navigation={navigation} />
+      }) 
+    },
     NotifSetting: { screen: NotifSetting,
       navigationOptions: ({navigation}) => ({ 
-        header: props => <AppBar centerElement="Notification Setting" leftElement="arrow-back" navigation={navigation} />
+        header: props => <AppBar centerElement="Notification" leftElement="arrow-back" navigation={navigation} />
       }) 
     },
 });

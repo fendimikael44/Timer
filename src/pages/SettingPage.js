@@ -18,22 +18,23 @@ import { connect } from 'react-redux'
 import { ListItem } from 'react-native-material-ui';
 
 class ListMenu extends React.Component {
-	_onPress = (key) => {
-		this.props.onPressItem(key);
+	_onPress = (id) => {
+		this.props.onPressItem(id);
 	}
 
 	render() {
-		const item = this.props.item;
-		const title = item.title;
-		const desc = item.desc;
-		const color = item.selected;
-		const colorSelected = item.key == '4' ? 
-							<Text style={styles.soundDesc}>{item.selected}</Text> : 
-							<Text style={[styles.colorDesc, {backgroundColor:color}]}></Text>
+		const { id, title, desc, selected } = this.props
+		// const item = this.props.item;
+		// const title = item.title;
+		// const desc = item.desc;
+		// const color = item.selected;
+		// const colorSelected = item.id == '4' ? 
+		// 					<Text style={styles.soundDesc}>{item.selected}</Text> : 
+		// 					<Text style={[styles.colorDesc, {backgroundColor:color}]}></Text>
 		
 		return (			
 			<TouchableHighlight
-				onPress={this._onPress.bind(this, item.key)}
+				onPress={this._onPress.bind(this, id)}
 				underlayColor='#dddddd'>
 				<View>
 					<View style={styles.rowContainer}>			
@@ -41,7 +42,7 @@ class ListMenu extends React.Component {
 							<Text style={styles.title}>{title}</Text>
 							<Text style={styles.desc}
 							numberOfLines={1}>{desc}</Text>	
-							{colorSelected}
+							<Text style={styles.soundDesc}>{selected}</Text>
 						</View>
 					</View>
 				<View style={styles.separator}/>
@@ -71,68 +72,39 @@ class SettingPage extends Component {
 	constructor(props) {
 		super(props);
 		// const data = this.props.navigation.state.params;
-		const { setting } = this.props
+		const { setting } = props
 		this.state = { 
-			FlatListMenu: [
-				{key: '1', title: 'Custom Background Color', desc: 'Change Background Color', selected: setting.themeColor},
-				{key: '2', title: 'Custom Timer Color', desc: 'Change Timer Color', selected: setting.pathColor},
-				// {key: '3', title: 'Custom Remaining Timer Color', desc: 'Change Remaining Timer Color', selected: data.configData.backwardTimer},
-				// {key: '4', title: 'Custom Notification', desc: 'Play a custom notification when the timer finishes', selected: data.configData.sound},
-			],
-			// theme: data.configData.theme,
-			// timer: data.configData.timer,
+			themeColor: setting.themeColor,
+			pathColor: setting.pathColor,
 			// backwardTimer: data.configData.backwardTimer,
 			// textColor: data.configData.textColor,
 			// sound: '',
 		}
 	}
+
 	
-	// static navigationOptions = {
-	// 	title: 'Setting',
-	// };
-	
-	_keyExtractor = (item, index) => index;
+	_keyExtractor = (item, index) => item.id;
 	
 	_renderItem = ({item, index}) => (
 		<ListMenu
-			item={item}
+			id={item.id}
+			title={item.title}
+			desc={item.desc}
+			selected={item.selected}
 			index={index}
 			onPressItem={this._onPressItem}
 		/>
 	);
 	
-	// changeTheme = (color) => {
-	// 	this.setState({
-	// 		theme: color
-	// 	})
-	// }
 	
-	// changeTimer = (color) => {
-	// 	this.setState({
-	// 		timer: color
-	// 	})
-	// }
-	
-	// changeRemainingTimer = (color) => {
-	// 	this.setState({
-	// 		backwardTimer: color
-	// 	})
-	// }
-	
-	// changeNotification = (sound) => {
-	// 	this.setState({
-	// 		sound: sound
-	// 	})
-	// }
-	
-	_onPressItem = (key) => {	
-		// const { params } = this.props.navigation;
+	_onPressItem = (id) => {	
+		const { navigate } = this.props.navigation;
 
-		if(key == "1"){
-			this.props.navigation.navigate('ColorSetting');
+		if(id == "1"){
+			navigate('ThemeSetting');
 		}
-		else if(key == "2"){
-			this.props.navigation.navigate('ColorSetting');
+		else if(id == "2"){
+			navigate('ColorSetting');
 		}
 		// else if(key == "3"){
 		// 	this.props.navigation.navigate('ColorSetting', {onGoBack: this.changeRemainingTimer, selected: this.state.backwardTimer});
@@ -142,48 +114,23 @@ class SettingPage extends Component {
 		// }
 	}
 	
-	// _apply = () => {	
-	// 	var objSetting = {};
-		
-	// 	if(this.state.theme != ''){
-	// 		objSetting.themeColor = this.state.theme;	
-	// 		if(this.state.theme == '#000000'){
-	// 			objSetting.textColor = '#fff';
-	// 			objSetting.clockFrame = '#fff';
-	// 		}
-	// 		else{
-	// 			objSetting.textColor = '#000000';
-	// 			objSetting.clockFrame = '#000000';
-	// 		}
-	// 	}
-	// 	if(this.state.timer != ''){
-	// 		objSetting.timerColor = this.state.timer;
-	// 	}
-	// 	if(this.state.backwardTimer != ''){
-	// 		objSetting.backwardColor = this.state.backwardTimer;	
-	// 	}
-	// 	objSetting.soundFile = this.state.sound;
-	// 	objSetting.soundAlert = "require('./sound/' + this.state.sound)";
-	// 	//Alert.alert(objSetting.soundAlert);
-	// 	this.props.navigation.goBack();
-		
-	// 	this.props.navigation.state.params.onGoBack(objSetting);
-	// }
-	
-	render() {			
+	render() {	
+		const { setting } = this.props
+		const FlatListMenu = [
+				{id: '1', title: 'Custom Theme', desc: 'Change Theme', selected: setting.themeColor},
+				{id: '2', title: 'Custom Timer Color', desc: 'Change Timer Color', selected: setting.pathColor},
+				// {key: '3', title: 'Custom Remaining Timer Color', desc: 'Change Remaining Timer Color', selected: data.configData.backwardTimer},
+				// {key: '4', title: 'Custom Notification', desc: 'Play a custom notification when the timer finishes', selected: data.configData.sound},
+		]
+
 		return (	
 			<View style={styles.SettingContainer}>
 				<FlatList 
-					data={this.state.FlatListMenu}
-					//keyExtractor={this._keyExtractor}
+					data={FlatListMenu}
+					extraData={this.state}
+					keyExtractor={this._keyExtractor}
 					renderItem={this._renderItem}
 				/>
-				<View style={styles.flowRight}>
-				{/* <Button 
-					onPress={this._apply}
-					color='#48BBEC'
-					title='Apply' /> */}
-				</View>
 			</View>
 		);
 		
@@ -213,7 +160,6 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 18,
 		fontWeight: 'bold',
-		//color: '#48BBEC'
 		color: '#000'
 	},
 	desc: {
