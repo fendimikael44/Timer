@@ -1,1 +1,1 @@
-export const baseUrl = 'http://projectkan.com/simplemail/timer/'
+export const baseUrl = 'http://i-nerrazzuri08.000webhostapp.com/timer/'
